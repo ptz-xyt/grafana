@@ -8,9 +8,9 @@ gcp_upload_artifacts_key = "gcp_upload_artifacts_key"
 azure_sp_app_id = "azure_sp_app_id"
 azure_sp_app_pw = "azure_sp_app_pw"
 azure_tenant = "azure_tenant"
-updater_app_id = 'updater-app-id'
-updater_app_installation_id = 'updater-app-installation-id'
-updater_app_private_key = 'updater-app-private-key'
+updater_app_id = "updater-app-id"
+updater_app_installation_id = "updater-app-installation-id"
+updater_app_private_key = "updater-app-private-key"
 
 def from_secret(secret):
     return {"from_secret": secret}
@@ -123,18 +123,18 @@ def secrets():
             "security_prefix",
         ),
         vault_secret(
-            'updater-app-private-key',
-            'infra/data/ci/github/updater-app',
-            'private-key',
+            "updater-app-private-key",
+            "infra/data/ci/github/updater-app",
+            "private-key",
         ),
         vault_secret(
-            'grafana_upstream_repo_main',
-            'infra/data/ci/grafana-release-eng/grafana-enterprise',
-            'upstream-repo-main',
+            "grafana_upstream_repo_main",
+            "infra/data/ci/grafana-release-eng/grafana-enterprise",
+            "upstream-repo-main",
         ),
         vault_secret(
-            'grafana_upstream_repo_tag',
-            'infra/data/ci/grafana-release-eng/grafana-enterprise',
-            'upstream-repo-tag',
+            "grafana_upstream_repo_tag",
+            "infra/data/ci/grafana-release-eng/grafana-enterprise",
+            "upstream-repo-tag",
         ),
     ]
