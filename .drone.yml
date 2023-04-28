@@ -6857,6 +6857,18 @@ kind: secret
 name: enterprise2_security_prefix
 ---
 get:
+  name: app-id
+  path: infra/data/ci/github/updater-app
+kind: secret
+name: updater-app-id
+---
+get:
+  name: app-installation-id
+  path: infra/data/ci/github/updater-app
+kind: secret
+name: updater-app-installation-id
+---
+get:
   name: private-key
   path: infra/data/ci/github/updater-app
 kind: secret
@@ -6875,6 +6887,6 @@ kind: secret
 name: grafana_upstream_repo_tag
 ---
 kind: signature
-hmac: 4da5cab7f02bcb817ac546218814a4ce8839a744b6b3b5eac22286e2e410e102
+hmac: 68a740de778157bf6df68eb5bb13bde9dc4cff4e892cdbe1a378dacf566a1761
 
 ...
