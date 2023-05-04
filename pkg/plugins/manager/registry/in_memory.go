@@ -48,6 +48,13 @@ func (i *InMemory) Add(_ context.Context, p *plugins.Plugin) error {
 	i.store[p.ID] = p
 	i.mu.Unlock()
 
+	// TODO? the alias registry should happen after all plugins have been registered
+	if p.Alias != "" && i.isRegistered(p.Alias) {
+		i.mu.Lock()
+		i.store[p.Alias] = p
+		i.mu.Unlock()
+	}
+
 	return nil
 }
 

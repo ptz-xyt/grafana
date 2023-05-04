@@ -259,6 +259,11 @@ export const updatePanels = () =>
     .get('/api/frontend/settings')
     .then((settings: Settings) => {
       config.panels = settings.panels;
+      Object.values(settings.panels).forEach((p) => {
+        if (p.alias?.length && !config.panels[p.alias]) {
+          config.panels[p.alias] = p;
+        }
+      });
     });
 
 export function getLatestCompatibleVersion(versions: Version[] | undefined): Version | undefined {
