@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { GrafanaTheme2, SelectableValue, TimeRange } from '@grafana/data';
 import { EditorField, EditorFieldGroup, EditorRow } from '@grafana/experimental';
+import { reportInteraction } from '@grafana/runtime';
 import { getSelectStyles, Select, useStyles2, useTheme2 } from '@grafana/ui';
 
 import CloudMonitoringDatasource from '../datasource';
@@ -87,6 +88,9 @@ export function Editor({
     const loadMetricDescriptors = async () => {
       if (projectName) {
         const metricDescriptors = await datasource.getMetricTypes(projectName);
+        reportInteraction('cloud-monitoring-metric-descriptors-loaded', {
+          count: metricDescriptors.length,
+        });
         const services = getServicesList(metricDescriptors);
         setMetricDescriptors(metricDescriptors);
         setServices(services);
