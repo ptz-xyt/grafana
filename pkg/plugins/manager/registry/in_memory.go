@@ -24,7 +24,11 @@ func NewInMemory() *InMemory {
 }
 
 func (i *InMemory) Plugin(_ context.Context, pluginID string) (*plugins.Plugin, bool) {
-	return i.plugin(pluginID)
+	p, ok := i.plugin(pluginID)
+	if !ok {
+
+	}
+	return p, ok
 }
 
 func (i *InMemory) Plugins(_ context.Context) []*plugins.Plugin {
@@ -47,13 +51,6 @@ func (i *InMemory) Add(_ context.Context, p *plugins.Plugin) error {
 	i.mu.Lock()
 	i.store[p.ID] = p
 	i.mu.Unlock()
-
-	// TODO? the alias registry should happen after all plugins have been registered
-	if p.Alias != "" && i.isRegistered(p.Alias) {
-		i.mu.Lock()
-		i.store[p.Alias] = p
-		i.mu.Unlock()
-	}
 
 	return nil
 }

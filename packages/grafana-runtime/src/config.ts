@@ -194,14 +194,6 @@ export class GrafanaBootConfig implements GrafanaConfig {
       this.angularSupportEnabled = false;
     }
 
-    // Registeres panel alias values
-    const settings = options.bootData.settings;
-    Object.values(settings.panels).forEach((p) => {
-      if (p.alias?.length && !settings.panels[p.alias]) {
-        settings.panels[p.alias] = p;
-      }
-    });
-
     // Creating theme after applying feature toggle overrides in case we need to toggle anything
     this.theme2 = createTheme(getThemeCustomizations(this));
 
