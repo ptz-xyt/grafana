@@ -24,11 +24,7 @@ func NewInMemory() *InMemory {
 }
 
 func (i *InMemory) Plugin(_ context.Context, pluginID string) (*plugins.Plugin, bool) {
-	p, ok := i.plugin(pluginID)
-	if !ok {
-
-	}
-	return p, ok
+	return i.plugin(pluginID)
 }
 
 func (i *InMemory) Plugins(_ context.Context) []*plugins.Plugin {
