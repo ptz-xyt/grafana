@@ -310,6 +310,7 @@ func (hs *HTTPServer) getFSDataSources(c *contextmodel.ReqContext, availablePlug
 			continue
 		}
 		plugin := ap.Plugin
+		dsDTO.Type = plugin.ID
 		dsDTO.Preload = plugin.Preload
 		dsDTO.Module = plugin.Module
 		dsDTO.PluginMeta = &plugins.PluginMetaDTO{
@@ -471,7 +472,11 @@ func (ap AvailablePlugins) Get(pluginType plugins.Type, pluginID string) (*avail
 	if _, exists := ap[pluginType][pluginID]; exists {
 		return ap[pluginType][pluginID], true
 	}
-
+	for _, p := range ap[pluginType] {
+		if p.Plugin.ID == pluginID || p.Plugin.Alias == pluginID {
+			return p, true
+		}
+	}
 	return nil, false
 }
 
