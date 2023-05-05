@@ -3,7 +3,6 @@
   "name": "Grafana Pyroscope",
   "id": "grafana-pyroscope",
   "category": "profiling",
-  "alias": "phlare",
 
   "metrics": true,
   "alerting": false,
