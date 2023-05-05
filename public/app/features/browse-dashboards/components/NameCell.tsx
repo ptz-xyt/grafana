@@ -3,10 +3,10 @@ import React from 'react';
 import { CellProps } from 'react-table';
 
 import { GrafanaTheme2 } from '@grafana/data';
-import { IconButton, Link, useStyles2 } from '@grafana/ui';
+import { Icon, IconButton, Link, useStyles2 } from '@grafana/ui';
 import { getSvgSize } from '@grafana/ui/src/components/Icon/utils';
 
-import { DashboardsTreeItem } from '../types';
+import { DashboardsTreeItem, SelectionState } from '../types';
 
 import { Indent } from './Indent';
 
@@ -14,7 +14,7 @@ type NameCellProps = CellProps<DashboardsTreeItem, unknown> & {
   onFolderClick: (uid: string, newOpenState: boolean) => void;
 };
 
-export function NameCell({ row: { original: data }, onFolderClick }: NameCellProps) {
+export function NameCell({ row: { original: data }, onFolderClick, isSelected }: NameCellProps) {
   const styles = useStyles2(getStyles);
   const { item, level, isOpen } = data;
 
@@ -31,7 +31,7 @@ export function NameCell({ row: { original: data }, onFolderClick }: NameCellPro
   const chevronIcon = isOpen ? 'angle-down' : 'angle-right';
 
   return (
-    <>
+    <div className={styles.container}>
       <Indent level={level} />
 
       {item.kind === 'folder' ? (
@@ -52,13 +52,26 @@ export function NameCell({ row: { original: data }, onFolderClick }: NameCellPro
       ) : (
         item.title
       )}
-    </>
+      {!isOpen && isSelected(item) === SelectionState.Mixed && (
+        <Icon
+          name="exclamation-triangle"
+          className={styles.warningIcon}
+          title="Children of this folder are selected!"
+        />
+      )}
+    </div>
   );
 }
 
 const getStyles = (theme: GrafanaTheme2) => {
   return {
     // Should be the same size as the <IconButton /> so Dashboard name is aligned to Folder name siblings
+    container: css({
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row',
+      gap: theme.spacing(0.5),
+    }),
     folderButtonSpacer: css({
       paddingLeft: `calc(${getSvgSize('md')}px + ${theme.spacing(0.5)})`,
     }),
@@ -66,6 +79,9 @@ const getStyles = (theme: GrafanaTheme2) => {
       '&:hover': {
         textDecoration: 'underline',
       },
+    }),
+    warningIcon: css({
+      color: theme.colors.warning.main,
     }),
   };
 };

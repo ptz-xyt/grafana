@@ -81,10 +81,9 @@ export function setItemSelectionState(
     if (isSelected) {
       // If we're selecting an item, check all ancestors and see if all their children are
       // now selected and update them appropriately
-      const children = state.childrenByParentUID[parent.uid];
-
-      const allChildrenSelected = children?.every((v) => state.selectedItems[v.kind][v.uid]) ?? false;
-      state.selectedItems[parent.kind][parent.uid] = allChildrenSelected;
+      // const children = state.childrenByParentUID[parent.uid];
+      // const allChildrenSelected = children?.every((v) => state.selectedItems[v.kind][v.uid]) ?? false;
+      // state.selectedItems[parent.kind][parent.uid] = allChildrenSelected;
     } else {
       // A folder cannot be selected if any of it's children are unselected
       state.selectedItems[parent.kind][parent.uid] = false;
