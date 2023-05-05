@@ -646,7 +646,7 @@
   {
     "name": "Grafana Pyroscope",
     "type": "datasource",
-    "id": "phlare",
+    "id": "grafana-pyroscope",
     "enabled": true,
     "pinned": false,
     "info": {
@@ -662,8 +662,8 @@
         }
       ],
       "logos": {
-        "small": "public/app/plugins/datasource/phlare/img/grafana_pyroscope_icon.svg",
-        "large": "public/app/plugins/datasource/phlare/img/grafana_pyroscope_icon.svg"
+        "small": "public/app/plugins/datasource/grafana-pyroscope/img/grafana_pyroscope_icon.svg",
+        "large": "public/app/plugins/datasource/grafana-pyroscope/img/grafana_pyroscope_icon.svg"
       },
       "build": {},
       "screenshots": null,
@@ -677,7 +677,7 @@
     },
     "latestVersion": "",
     "hasUpdate": false,
-    "defaultNavUrl": "/plugins/phlare/",
+    "defaultNavUrl": "/plugins/grafana-pyroscope/",
     "category": "profiling",
     "state": "",
     "signature": "internal",

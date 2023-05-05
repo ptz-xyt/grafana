@@ -731,11 +731,13 @@ func (hs *HTTPServer) convertModelToDtos(ctx context.Context, ds *datasources.Da
 		ReadOnly:         ds.ReadOnly,
 	}
 
-	if plugin, exists := hs.pluginStore.Plugin(ctx, ds.Type); exists {
-		dto.TypeLogoUrl = plugin.Info.Logos.Small
-		dto.Type = plugin.ID // may be from an alias
-	} else {
-		dto.TypeLogoUrl = "public/img/icn-datasource.svg"
+	if hs.pluginStore != nil {
+		if plugin, exists := hs.pluginStore.Plugin(ctx, ds.Type); exists {
+			dto.TypeLogoUrl = plugin.Info.Logos.Small
+			dto.Type = plugin.ID // may be from an alias
+		} else {
+			dto.TypeLogoUrl = "public/img/icn-datasource.svg"
+		}
 	}
 
 	secrets, err := hs.DataSourcesService.DecryptedValues(ctx, ds)
