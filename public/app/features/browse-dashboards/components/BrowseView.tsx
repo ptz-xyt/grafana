@@ -14,7 +14,9 @@ import {
   useChildrenByParentUIDState,
   setAllSelection,
   useBrowseLoadingStatus,
+  useRootItemsState,
 } from '../state';
+import { findItem } from '../state/utils';
 import { DashboardTreeSelection, SelectionState } from '../types';
 
 import { DashboardsTree } from './DashboardsTree';
@@ -31,6 +33,7 @@ export function BrowseView({ folderUID, width, height, canSelect }: BrowseViewPr
   const dispatch = useDispatch();
   const flatTree = useFlatTreeState(folderUID);
   const selectedItems = useCheckboxSelectionState();
+  const rootItems = useRootItemsState();
   const childrenByParentUID = useChildrenByParentUIDState();
 
   const handleFolderClick = useCallback(
@@ -99,6 +102,10 @@ export function BrowseView({ folderUID, width, height, canSelect }: BrowseViewPr
     [selectedItems, childrenByParentUID]
   );
 
+  const isDisabled = (item: DashboardViewItem): boolean => {
+    return hasSelectedParent(item, rootItems, childrenByParentUID, selectedItems);
+  };
+
   if (status === 'pending') {
     return <Spinner />;
   }
@@ -127,6 +134,7 @@ export function BrowseView({ folderUID, width, height, canSelect }: BrowseViewPr
       width={width}
       height={height}
       isSelected={isSelected}
+      isDisabled={isDisabled}
       onFolderClick={handleFolderClick}
       onAllSelectionChange={(newState) => dispatch(setAllSelection({ isSelected: newState }))}
       onItemSelectionChange={handleItemSelectionChange}
@@ -152,4 +160,17 @@ function hasSelectedDescendants(
 
     return hasSelectedDescendants(v, childrenByParentUID, selectedItems);
   });
+}
+
+function hasSelectedParent(
+  item: DashboardViewItem,
+  rootItems: DashboardViewItem[] | undefined,
+  childrenByParentUID: Record<string, DashboardViewItem[] | undefined>,
+  selectedItems: DashboardTreeSelection
+): boolean {
+  if (item.parentUID) {
+    const parent = findItem(rootItems ?? [], childrenByParentUID, item.parentUID);
+    return parent ? Boolean(selectedItems.folder[parent.uid]) : false;
+  }
+  return false;
 }

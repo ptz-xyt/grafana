@@ -85,6 +85,10 @@ export function useCheckboxSelectionState() {
   return useSelector(selectedItemsSelector);
 }
 
+export function useRootItemsState() {
+  return useSelector(rootItemsSelector);
+}
+
 export function useChildrenByParentUIDState() {
   return useSelector((wholeState: StoreState) => wholeState.browseDashboards.childrenByParentUID);
 }

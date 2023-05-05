@@ -8,6 +8,7 @@ import { DashboardsTreeCellProps, SelectionState } from '../types';
 export default function CheckboxCell({
   row: { original: row },
   isSelected,
+  isDisabled,
   onItemSelectionChange,
 }: DashboardsTreeCellProps) {
   const item = row.item;
@@ -17,11 +18,13 @@ export default function CheckboxCell({
   }
 
   const state = isSelected(item);
+  const disabled = isDisabled(item);
 
   return (
     <Checkbox
       data-testid={selectors.pages.BrowseDashbards.table.checkbox(item.uid)}
       value={state === SelectionState.Selected}
+      disabled={disabled}
       indeterminate={state === SelectionState.Mixed}
       onChange={(ev) => onItemSelectionChange?.(item, ev.currentTarget.checked)}
     />

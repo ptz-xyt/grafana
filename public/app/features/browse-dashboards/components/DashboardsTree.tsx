@@ -28,6 +28,7 @@ interface DashboardsTreeProps {
   width: number;
   height: number;
   isSelected: (kind: DashboardViewItem | '$all') => SelectionState;
+  isDisabled: (item: DashboardViewItem) => boolean;
   onFolderClick: (uid: string, newOpenState: boolean) => void;
   onAllSelectionChange: (newState: boolean) => void;
   onItemSelectionChange: (item: DashboardViewItem, newState: boolean) => void;
@@ -42,6 +43,7 @@ export function DashboardsTree({
   width,
   height,
   isSelected,
+  isDisabled,
   onFolderClick,
   onAllSelectionChange,
   onItemSelectionChange,
@@ -89,12 +91,13 @@ export function DashboardsTree({
     () => ({
       table,
       isSelected,
+      isDisabled,
       onAllSelectionChange,
       onItemSelectionChange,
     }),
     // we need this to rerender if items changes
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [table, isSelected, onAllSelectionChange, onItemSelectionChange, items]
+    [table, isSelected, isDisabled, onAllSelectionChange, onItemSelectionChange, items]
   );
 
   return (
@@ -140,6 +143,7 @@ interface VirtualListRowProps {
   data: {
     table: TableInstance<DashboardsTreeItem>;
     isSelected: DashboardsTreeCellProps['isSelected'];
+    isDisabled: DashboardsTreeCellProps['isDisabled'];
     onAllSelectionChange: DashboardsTreeCellProps['onAllSelectionChange'];
     onItemSelectionChange: DashboardsTreeCellProps['onItemSelectionChange'];
   };
@@ -147,7 +151,7 @@ interface VirtualListRowProps {
 
 function VirtualListRow({ index, style, data }: VirtualListRowProps) {
   const styles = useStyles2(getStyles);
-  const { table, isSelected, onItemSelectionChange } = data;
+  const { table, isSelected, isDisabled, onItemSelectionChange } = data;
   const { rows, prepareRow } = table;
 
   const row = rows[index];
@@ -164,7 +168,7 @@ function VirtualListRow({ index, style, data }: VirtualListRowProps) {
 
         return (
           <div key={key} {...cellProps} className={styles.cell}>
-            {cell.render('Cell', { isSelected, onItemSelectionChange })}
+            {cell.render('Cell', { isSelected, isDisabled, onItemSelectionChange })}
           </div>
         );
       })}
