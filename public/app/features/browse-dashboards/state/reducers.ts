@@ -69,29 +69,28 @@ export function setItemSelectionState(
   // Reconcile all ancestors to make sure they're in the correct state.
   let nextParentUID = item.parentUID;
 
-  // while (nextParentUID) {
-  //   const parent = findItem(state.rootItems ?? [], state.childrenByParentUID, nextParentUID);
+  while (nextParentUID) {
+    const parent = findItem(state.rootItems ?? [], state.childrenByParentUID, nextParentUID);
 
-  //   // This case should not happen, but a find can theortically return undefined, and it
-  //   // helps limit infinite loops
-  //   if (!parent) {
-  //     break;
-  //   }
+    // This case should not happen, but a find can theortically return undefined, and it
+    // helps limit infinite loops
+    if (!parent) {
+      break;
+    }
 
-  //   if (isSelected) {
-  //     // If we're selecting an item, check all ancestors and see if all their children are
-  //     // now selected and update them appropriately
-  //     const children = state.childrenByParentUID[parent.uid];
+    if (isSelected) {
+      //     // If we're selecting an item, check all ancestors and see if all their children are
+      //     // now selected and update them appropriately
+      //     const children = state.childrenByParentUID[parent.uid];
+      //     const allChildrenSelected = children?.every((v) => state.selectedItems[v.kind][v.uid]) ?? false;
+      //     state.selectedItems[parent.kind][parent.uid] = allChildrenSelected;
+    } else {
+      // A folder cannot be selected if any of it's children are unselected
+      state.selectedItems[parent.kind][parent.uid] = false;
+    }
 
-  //     const allChildrenSelected = children?.every((v) => state.selectedItems[v.kind][v.uid]) ?? false;
-  //     state.selectedItems[parent.kind][parent.uid] = allChildrenSelected;
-  //   } else {
-  //     // A folder cannot be selected if any of it's children are unselected
-  //     state.selectedItems[parent.kind][parent.uid] = false;
-  //   }
-
-  //   nextParentUID = parent.parentUID;
-  // }
+    nextParentUID = parent.parentUID;
+  }
 
   // Check to see if we should mark the header checkbox selected if all root items are selected
   state.selectedItems.$all = state.rootItems?.every((v) => state.selectedItems[v.kind][v.uid]) ?? false;
